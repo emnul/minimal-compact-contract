@@ -12,7 +12,7 @@ const witnesses = {
       context.ledger.mtHashed.findPathForLeaf(
         foo,
       );
-    console.log("Path results: ", path, "\n");
+    console.log("Path results when using insertHash API: ", path, "\n");
     const defaultPath: MerkleTreePath<Uint8Array> = {
       leaf: new Uint8Array(32),
       path: Array.from({ length: 10 }, () => ({
@@ -28,7 +28,7 @@ const witnesses = {
       context.ledger.mtNoHash.findPathForLeaf(
         foo,
       );
-    console.log("Path results: ", path, "\n");
+    console.log("Path results when using insert API: ", path, "\n");
     const defaultPath: MerkleTreePath<bigint> = {
       leaf: 0n,
       path: Array.from({ length: 10 }, () => ({
@@ -64,7 +64,7 @@ context = results.context;
 let membershipResults = contract.circuits.proveMtMembershipNoLeafHash(context, 1n);
 context = membershipResults.context;
 
-console.log("membershipResult: ", membershipResults.result, "\n");
+console.log("membershipResult when proving with insertHash API: ", membershipResults.result, "\n");
 
 results = contract.circuits.insertFooNoHash(context, 1n);
 context = results.context;
@@ -72,4 +72,4 @@ context = results.context;
 membershipResults = contract.circuits.proveMtMembership(context, 1n);
 context = membershipResults.context;
 
-console.log("membershipResult: ", membershipResults.result, "\n");
+console.log("membershipResult when proving with insert API: ", membershipResults.result, "\n");
