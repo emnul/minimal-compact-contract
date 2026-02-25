@@ -22,6 +22,7 @@ export circuit insertFooNoHash(foo: Field): [] {
 
 export circuit proveMtMembershipNoLeafHash(foo: Field): Boolean {
   const witnessPath = getPathForFooHash(persistentHash<Field>(foo));
+  // witnessPath is always default path because findPathForLeaf TS API cannot find a path
   const derivedMtPathRoot = merkleTreePathRootNoLeafHash<10>(witnessPath);
   return mtHashed.checkRoot(disclose(derivedMtPathRoot));
 }
