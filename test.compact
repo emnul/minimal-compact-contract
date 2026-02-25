@@ -1,0 +1,20 @@
+pragma language_version >= 0.21.0;
+
+import CompactStandardLibrary;
+
+export ledger mt: MerkleTree<10, Bytes<32>>;
+
+witness getPathForFoo(foo: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+
+export {MerkleTreePath};
+
+
+export circuit insertFoo(foo: Field): [] {
+  mt.insertHash(disclose(persistentHash<Field>(foo)));
+}
+
+export circuit proveMtMembership(foo: Field): Boolean {
+  const witnessPath = getPathForFoo(persistentHash<Field>(foo));
+  const derivedMtPathRoot = merkleTreePathRootNoLeafHash<10>(witnessPath);
+  return mt.checkRoot(disclose(derivedMtPathRoot));
+}

@@ -1,0 +1,21 @@
+{
+  "name": "minimal-compact-contract",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "tsc -p . && node dist/script.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.14.0"
+  }
+}
