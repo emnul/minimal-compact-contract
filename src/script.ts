@@ -12,6 +12,7 @@ const witnesses = {
       context.ledger.mt.findPathForLeaf(
         foo,
       );
+    console.log(path);
     const defaultPath: MerkleTreePath<Uint8Array> = {
       leaf: new Uint8Array(32),
       path: Array.from({ length: 10 }, () => ({
