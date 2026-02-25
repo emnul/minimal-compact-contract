@@ -7,14 +7,30 @@ import {
 import { createConstructorContext, sampleContractAddress, QueryContext, CostModel, WitnessContext, persistentHash, CompactTypeField } from '@midnight-ntwrk/compact-runtime';
 
 const witnesses = {
-  getPathForFoo(context: WitnessContext<Ledger, {}>, foo: Uint8Array): [{}, MerkleTreePath<Uint8Array>] {
+  getPathForFooHash(context: WitnessContext<Ledger, {}>, foo: Uint8Array): [{}, MerkleTreePath<Uint8Array>] {
     let path =
-      context.ledger.mt.findPathForLeaf(
+      context.ledger.mtHashed.findPathForLeaf(
         foo,
       );
-    console.log(path);
+    console.log("Path results: ", path, "\n");
     const defaultPath: MerkleTreePath<Uint8Array> = {
       leaf: new Uint8Array(32),
+      path: Array.from({ length: 10 }, () => ({
+        sibling: { field: 0n },
+        goes_left: false,
+      })),
+    };
+    path = path ? path : defaultPath;
+    return [{}, path]
+  },
+  getPathForFooNoHash(context: WitnessContext<Ledger, {}>, foo: bigint): [{}, MerkleTreePath<bigint>] {
+    let path =
+      context.ledger.mtNoHash.findPathForLeaf(
+        foo,
+      );
+    console.log("Path results: ", path, "\n");
+    const defaultPath: MerkleTreePath<bigint> = {
+      leaf: 0n,
       path: Array.from({ length: 10 }, () => ({
         sibling: { field: 0n },
         goes_left: false,
@@ -42,10 +58,18 @@ let context = {
   costModel: CostModel.initialCostModel(),
 };
 
-let results = contract.circuits.insertFoo(context, 1n);
+let results = contract.circuits.insertFooHash(context, 1n);
 context = results.context;
 
-let membershipResults = contract.circuits.proveMtMembership(context, 1n);
+let membershipResults = contract.circuits.proveMtMembershipNoLeafHash(context, 1n);
 context = membershipResults.context;
 
-console.log("membershipResult:", membershipResults.result);
+console.log("membershipResult: ", membershipResults.result, "\n");
+
+results = contract.circuits.insertFooNoHash(context, 1n);
+context = results.context;
+
+membershipResults = contract.circuits.proveMtMembership(context, 1n);
+context = membershipResults.context;
+
+console.log("membershipResult: ", membershipResults.result, "\n");
