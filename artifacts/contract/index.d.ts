@@ -6,48 +6,38 @@ export type MerkleTreePath<T> = { leaf: T;
                                         }[]
                                 };
 
+export type ZswapCoinPublicKey = { bytes: Uint8Array };
+
 export type Witnesses<PS> = {
-  getPathForFooHash(context: __compactRuntime.WitnessContext<Ledger, PS>,
-                    foo_0: Uint8Array): [PS, MerkleTreePath<Uint8Array>];
-  getPathForFooNoHash(context: __compactRuntime.WitnessContext<Ledger, PS>,
-                      foo_0: bigint): [PS, MerkleTreePath<bigint>];
+  wit_getRoleCommitmentPath(context: __compactRuntime.WitnessContext<Ledger, PS>,
+                            roleCommitment_0: Uint8Array): [PS, MerkleTreePath<Uint8Array>];
+  wit_secretNonce(context: __compactRuntime.WitnessContext<Ledger, PS>,
+                  role_0: Uint8Array): [PS, Uint8Array];
 }
 
 export type ImpureCircuits<PS> = {
-  insertFooHash(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  insertFooNoHash(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  proveMtMembershipNoLeafHash(context: __compactRuntime.CircuitContext<PS>,
-                              foo_0: bigint): __compactRuntime.CircuitResults<PS, boolean>;
-  proveMtMembership(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, boolean>;
+  doStuff(context: __compactRuntime.CircuitContext<PS>,
+          role_0: Uint8Array,
+          account_0: ZswapCoinPublicKey): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type PureCircuits = {
 }
 
 export type Circuits<PS> = {
-  insertFooHash(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  insertFooNoHash(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, []>;
-  proveMtMembershipNoLeafHash(context: __compactRuntime.CircuitContext<PS>,
-                              foo_0: bigint): __compactRuntime.CircuitResults<PS, boolean>;
-  proveMtMembership(context: __compactRuntime.CircuitContext<PS>, foo_0: bigint): __compactRuntime.CircuitResults<PS, boolean>;
+  doStuff(context: __compactRuntime.CircuitContext<PS>,
+          role_0: Uint8Array,
+          account_0: ZswapCoinPublicKey): __compactRuntime.CircuitResults<PS, []>;
 }
 
 export type Ledger = {
-  mtHashed: {
+  _operatorRoles: {
     isFull(): boolean;
     checkRoot(rt_0: { field: bigint }): boolean;
     root(): __compactRuntime.MerkleTreeDigest;
     firstFree(): bigint;
     pathForLeaf(index_0: bigint, leaf_0: Uint8Array): __compactRuntime.MerkleTreePath<Uint8Array>;
     findPathForLeaf(leaf_0: Uint8Array): __compactRuntime.MerkleTreePath<Uint8Array> | undefined
-  };
-  mtNoHash: {
-    isFull(): boolean;
-    checkRoot(rt_0: { field: bigint }): boolean;
-    root(): __compactRuntime.MerkleTreeDigest;
-    firstFree(): bigint;
-    pathForLeaf(index_0: bigint, leaf_0: bigint): __compactRuntime.MerkleTreePath<bigint>;
-    findPathForLeaf(leaf_0: bigint): __compactRuntime.MerkleTreePath<bigint> | undefined
   };
 }
 
@@ -60,7 +50,8 @@ export declare class Contract<PS = any, W extends Witnesses<PS> = Witnesses<PS>>
   circuits: Circuits<PS>;
   impureCircuits: ImpureCircuits<PS>;
   constructor(witnesses: W);
-  initialState(context: __compactRuntime.ConstructorContext<PS>): __compactRuntime.ConstructorResult<PS>;
+  initialState(context: __compactRuntime.ConstructorContext<PS>,
+               instanceSalt_0: Uint8Array): __compactRuntime.ConstructorResult<PS>;
 }
 
 export declare function ledger(state: __compactRuntime.StateValue | __compactRuntime.ChargedState): Ledger;
