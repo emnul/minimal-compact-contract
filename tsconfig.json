@@ -1,6 +1,6 @@
 {
   "include": [
-    "src/script.ts"
+    "src/*"
   ],
   "compilerOptions": {
     "rootDir": "src",

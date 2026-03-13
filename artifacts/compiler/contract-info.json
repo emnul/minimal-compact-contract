@@ -4,14 +4,35 @@
   "runtime-version": "0.14.0",
   "circuits": [
     {
-      "name": "insertFooHash",
+      "name": "doStuff",
       "pure": false,
       "proof": true,
       "arguments": [
         {
-          "name": "foo",
+          "name": "role",
           "type": {
-            "type-name": "Field"
+            "type-name": "Alias",
+            "name": "RoleIdentifier",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          }
+        },
+        {
+          "name": "account",
+          "type": {
+            "type-name": "Struct",
+            "name": "ZswapCoinPublicKey",
+            "elements": [
+              {
+                "name": "bytes",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
           }
         }
       ],
@@ -19,68 +40,22 @@
         "type-name": "Tuple",
         "types": [
         ]
-      }
-    },
-    {
-      "name": "insertFooNoHash",
-      "pure": false,
-      "proof": true,
-      "arguments": [
-        {
-          "name": "foo",
-          "type": {
-            "type-name": "Field"
-          }
-        }
-      ],
-      "result-type": {
-        "type-name": "Tuple",
-        "types": [
-        ]
-      }
-    },
-    {
-      "name": "proveMtMembershipNoLeafHash",
-      "pure": false,
-      "proof": true,
-      "arguments": [
-        {
-          "name": "foo",
-          "type": {
-            "type-name": "Field"
-          }
-        }
-      ],
-      "result-type": {
-        "type-name": "Boolean"
-      }
-    },
-    {
-      "name": "proveMtMembership",
-      "pure": false,
-      "proof": true,
-      "arguments": [
-        {
-          "name": "foo",
-          "type": {
-            "type-name": "Field"
-          }
-        }
-      ],
-      "result-type": {
-        "type-name": "Boolean"
       }
     }
   ],
   "witnesses": [
     {
-      "name": "getPathForFooHash",
+      "name": "wit_getRoleCommitmentPath",
       "arguments": [
         {
-          "name": "foo",
+          "name": "roleCommitment",
           "type": {
-            "type-name": "Bytes",
-            "length": 32
+            "type-name": "Alias",
+            "name": "RoleCommitment",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
           }
         }
       ],
@@ -91,15 +66,19 @@
           {
             "name": "leaf",
             "type": {
-              "type-name": "Bytes",
-              "length": 32
+              "type-name": "Alias",
+              "name": "RoleCommitment",
+              "type": {
+                "type-name": "Bytes",
+                "length": 32
+              }
             }
           },
           {
             "name": "path",
             "type": {
               "type-name": "Vector",
-              "length": 10,
+              "length": 20,
               "type": {
                 "type-name": "Struct",
                 "name": "MerkleTreePathEntry",
@@ -133,60 +112,23 @@
       }
     },
     {
-      "name": "getPathForFooNoHash",
+      "name": "wit_secretNonce",
       "arguments": [
         {
-          "name": "foo",
+          "name": "role",
           "type": {
-            "type-name": "Field"
+            "type-name": "Alias",
+            "name": "RoleIdentifier",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
           }
         }
       ],
       "result type": {
-        "type-name": "Struct",
-        "name": "MerkleTreePath",
-        "elements": [
-          {
-            "name": "leaf",
-            "type": {
-              "type-name": "Field"
-            }
-          },
-          {
-            "name": "path",
-            "type": {
-              "type-name": "Vector",
-              "length": 10,
-              "type": {
-                "type-name": "Struct",
-                "name": "MerkleTreePathEntry",
-                "elements": [
-                  {
-                    "name": "sibling",
-                    "type": {
-                      "type-name": "Struct",
-                      "name": "MerkleTreeDigest",
-                      "elements": [
-                        {
-                          "name": "field",
-                          "type": {
-                            "type-name": "Field"
-                          }
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "name": "goes_left",
-                    "type": {
-                      "type-name": "Boolean"
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "type-name": "Bytes",
+        "length": 32
       }
     }
   ],
